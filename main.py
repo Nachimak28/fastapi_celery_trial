@@ -1,7 +1,7 @@
-from celery.result import AsyncResult
+# from celery.result import AsyncResult
 from fastapi import Body, FastAPI, Form, Request
 from fastapi.responses import JSONResponse
-from worker import create_task
+from worker import celery, create_task
 
 
 app = FastAPI()
@@ -20,7 +20,7 @@ def run_task(task_type: int = Form(default=10)):
 
 @app.get("/tasks/{task_id}")
 def get_status(task_id):
-    task_result = AsyncResult(task_id)
+    task_result = celery.AsyncResult(task_id)
     result = {
         "task_id": task_id,
         "task_status": task_result.status,
