@@ -13,7 +13,7 @@ def home(request: Request):
 
 
 @app.post("/tasks", status_code=201)
-def run_task(task_type: int = Form()):
+def run_task(task_type: int = Form(default=10)):
     task = create_task.delay(int(task_type))
     return JSONResponse({"task_id": task.id})
 
